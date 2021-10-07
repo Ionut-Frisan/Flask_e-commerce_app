@@ -1,0 +1,41 @@
+{% extends 'admind.html' %}
+
+{% block hrefs %} 
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+<link rel="stylesheet" href="{{ url_for('static', filename='admin_style.css') }}">
+
+{% endblock %}
+
+{% block title %} Admin - Produse {% endblock %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+    <form action="{{ url_for('views.edit_produs', id = produs_editat.id) }}" class="col-lg-4" METHOD="POST" style="margin: auto; width: 60%; padding-top: 20px;">
+        <h2 style="text-align:center;">Editare produs cu id: {{ produs_editat.id }}</h2>
+        <label for="nume">Nume</label>
+        <input type="text" placeholder="{{ produs_editat.Nume }}" name="nume" class="form-control">
+        <label for="pretActualizat">Pret actualizat</label>
+        <input type="number" placeholder="{{ produs_editat.PretNou }}" name="pretActualizat" class="form-control">
+        <label for="pretVechi">Pret vechi</label>
+        <input type="number" placeholder="{{ produs_editat.PretVechi }}" name="pretVechi" class="form-control">
+        <label for="descriere">Descriere</label>
+        <textarea placeholder="{{ produs_editat.Descriere }}" name="descriere" class="form-control"></textarea>
+        <label for="cantitate">Cantitate</label>
+        <input type="number" placeholder="{{ produs_editat.Cantitate }}" name="cantitate" class="form-control">
+        <label for="categorie">Categorie</label>
+        <input type="text" placeholder="{{ produs_editat.Categorie }}" name="categorie" class="form-control">
+        <label for="upload">Upload</label>
+        <input type="number" placeholder="{{ produs_editat.Upload }}" name="upload" min="0" max="1" class="form-control">
+        <br>
+        <p class="disabled" style="text-align: center; font-size: 15px;"> Daca nu se vrea modificarea tuturor campurilor se completeaza doar campurile dorite si restul vor ramane neschimbate </p>
+        
+        <input type="submit" value="Submit" class="btn btn-info"></input>
+    </form>
+
+
+</div>
+
+{% endblock %}

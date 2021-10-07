@@ -1,0 +1,44 @@
+{% extends "admind.html" %}
+{% block title %} Interactiuni clienti {% endblock %}
+
+{% block content %}
+
+{% block hrefs %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+<link rel="stylesheet" href="{{ url_for('static', filename='view_order.css') }}">
+{% endblock %}
+
+{% with messages = get_flashed_messages(with_categories=True) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            {% if category == "succes" %}
+            <p style="text-align: center; color:green; font-weight: bold; padding-top: 10px;">{{message}}</p>
+            {% else %}
+            <p style="text-align: center; color:red; font-weight: bold; padding-top: 10px;">{{message}}</p>
+            {% endif %}
+        {% endfor %}
+    {% endif%}
+{% endwith %}
+
+<div class="wrapper">
+
+    <div class="title">Interaction no.{{interaction.id}}</div>
+    <div class="form-group">
+        <label for="title">Title</label>
+        <input type="text" name="title" readonly placeholder="{{interaction.title}}">
+    </div>
+    <div class="form-group">
+        <label for="email">Email</label>
+        <input type="text" name="email" readonly placeholder="{{interaction.email}}">
+    </div>
+    <div class="form-group">
+        <label for="date">Date</label>
+        <input type="text" name="date" readonly placeholder="{{interaction.date}}">
+    </div>
+    <div class="form-group">
+        <label for="message">Message</label>
+        <textarea name="message" id=""rows="6" readonly placeholder="{{interaction.message}}"></textarea>
+    </div>
+</div>
+
+{% endblock %}

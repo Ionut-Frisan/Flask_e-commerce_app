@@ -1,0 +1,68 @@
+{% extends 'admind.html' %}
+
+{% block hrefs %} 
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+<link rel="stylesheet" href="{{ url_for('static', filename='admin_style.css') }}">
+
+{% endblock %}
+
+{% block title %} Admin - Produse {% endblock %}
+
+{% block content %}
+
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    {% if message =="Produsul a fost adaugat cu succes!" %}
+                    <p style="text-align: center; color:green; font-weight: bold;">{{message}}</p>
+                    {% else %}
+                    <p style="text-align: center; color:red; font-weight: bold;">{{message}}</p>
+                    {% endif %}
+                {% endfor %}
+            {% endif%}
+        {% endwith %}
+<div class="container-fluid">
+    
+    <form class="col-lg-4" method="POST" action="{{ url_for('views.add_produse') }}" enctype="multipart/form-data" style="width: 60%; margin: auto;padding-top: 20px;">
+        <h2 style="text-align:center;">Adaugare produs nou</h2>
+        {{ form.csrf_token }}
+        <div class="form-group">
+            *{{ form.Nume.label }}
+            {{ form.Nume(class="form-control", placeholder="Nume") }}
+        </div>
+        <div class="form-group">
+            *<label for="PretNou">Pret Nou</label>
+            {{ form.PretNou(class="form-control", placeholder="Pret Nou", type="number") }}
+        </div>
+        <div class="form-group">
+        <label for="PretVechi">Pret Vechi</label>
+            {{ form.PretVechi(class="form-control" , placeholder="Pret Vechi - daca nu se completeaza se va afisa doar 'Pret Nou' in lista de produse si in pagina produsului", type="number") }}
+        <div class="form-group">
+            *{{ form.Categorie.label }}
+            {{ form.Categorie(class="form-control" , placeholder="Categorie") }}
+        </div>
+        <div class="form-group" >
+            *{{ form.Descriere.label }}
+            {{ form.Descriere(class="form-control", placeholder="Descriere") }}
+        </div>
+        <div class="form-group">
+            *{{ form.Cantitate.label }}
+            {{ form.Cantitate(class="form-control", placeholder="Cantitate", type="number") }}
+        </div>
+        <div class="form-group">
+            *{{ form.Upload.label }}
+            {{ form.Upload(class="form-control", placeholder="0- nu necesita upload, 1- necesita upload", min="0", max="1", type="number") }}
+        </div>
+        <br>
+        <div class="form-group">   
+            
+            <p>
+                <input type='file' name='files[]' class="form-control" multiple="true" autocomplete="off" required label="">
+            </p>
+            
+        </div>
+        <input type="submit" value="Submit" class="btn btn-info"></input>
+    </form>
+</div>
+{% endblock %}

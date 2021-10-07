@@ -1,0 +1,164 @@
+.content{
+    margin:0;
+    padding: 20px;
+}
+
+*{
+    box-sizing: border-box;
+}
+
+.table td a {
+    text-decoration: none;
+    color: #000;
+}
+
+.table{
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table td, .table th{
+    padding: 12px 15px;
+    text-align: center;
+}
+
+.table th{
+    background-color: rgb(51,51,51);
+    color:white;
+}
+
+.table tbody tr:nth-child(even){
+    background-color: #f5f5f5;
+}
+.table tbody tr:nth-child(odd){
+    background-color: white;
+}
+
+.checkout a{
+    text-decoration: none;
+    color: white;
+}
+
+@media(max-width:721px){
+    .table thead{
+        display: none;
+    }
+    .table, .table tbody, .table tr, .table td{
+        display: block;
+        width: 100%;
+    }
+    .table tr{
+        margin-bottom: 15px;
+    }
+    .table td{
+        text-align: right;
+        padding-left: 50%;
+        text-align: right;
+        position: relative;
+    }
+    .table td::before{
+        content: attr(data-label);
+        position:absolute;
+        left:0;
+        width: 50%;
+        padding-left: 15px;
+        font-weight: bold;
+        text-align: left;
+    }
+}
+
+.update-icon{
+    width: 16px;
+    height: auto;
+}
+
+.updateBtn{
+    background-color: inherit;
+    border: none;
+}
+
+.container_empty_cart {
+    display: block;
+}
+
+.quantity{
+    border: 0px;
+   background-color: inherit;
+    width: 40px;
+    min-width: 40px;
+}
+
+.empty_cart{
+    width: 20%;
+    height: auto;
+    margin: auto;
+    position: absolute;
+    left: 40%;
+    top: 20%;
+}
+
+.container_empty_cart h5{
+    font-size: 20px;
+    text-align: center;
+}
+
+.container_empty_cart h6{
+    font-size: 15px;
+    text-align: center;
+}
+
+.container_empty_cart a{
+    text-decoration: none;
+    color: rgb(51,51,51);
+}
+
+.Container{
+    background-color: rgb(236,237,238);
+}
+
+body{
+    background-color: rgb(236,237,238);
+}
+
+.cart_options *{
+    display: inline-block;
+    
+}
+
+.cart_options{
+    position: relative;
+}
+
+.cart_options .clear{
+    position: absolute;
+    right: 0;
+    border-radius: 5px;
+    border: none;
+}
+
+.cart_options p{
+    padding-left:30px;
+
+}
+
+.checkout{
+    padding: 4px;
+    border: none;
+    border-radius: 5px;
+    color:white;
+    background-color: rgb(51,51,51);
+}
+
+.clear a{
+    text-decoration: none;
+    color:black;
+}
+
+.clear{
+    background-color: white;
+    padding: 4px;
+}
+
+.footer{
+    margin-bottom: 200px;
+}

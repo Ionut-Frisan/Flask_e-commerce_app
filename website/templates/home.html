@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block title %} Why Not? {% endblock %}
+
+{% block hrefs %}
+<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='styles.css')}}">
+<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='home.css')}}">
+{% endblock %}
+
+{% block content %} 
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+
+{% with messages = get_flashed_messages(with_categories=True) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            {% if category == "error" %}
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            {% else %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
+<body style="background-color: rgb(236, 237, 238) ;">
+    
+    <div class="wrapper">
+        
+        <div class="filters">
+            <div class="dropdown">
+                <button class="dropbtn">Sort by^ </button>
+                    <div class="dropdown-content">
+                        <a href="#">Newest</a>
+                        <a href="#">A to Z</a>
+                        <a href="#">Z to A</a>
+                        <a href="#">Ascending Price</a>
+                        <a href="#">Descdending Price</a>
+                    </div>
+                    
+            </div>
+            <div id="top"></div>
+            <div class="go-to-bottom"> <a href="#finish"> Go to bottom </a></div>
+            
+        </div>
+
+        <div class="products">
+        {% for i in range(products|length) %}
+            <div class="col" style="margin: 0;">
+                <div class="card h-100" style="width: 100%; height: 100%; border: 0;"> 
+                    <a href="{{url_for('views.product', id=products[i].id)}}"><img class="card-img-top" src="{{url_for('static', filename='img/'+products[i].Imagini.split('//')[0])}}" alt="Photo" style="max-height:286px; min-height: 286px; object-fit:contain;"> </a>
+                    <div class="card-body" style="margin-top: 0; padding-top: 2px; padding-bottom: 4px; height: 5rem;">
+                        <p class="card-text" style="margin-bottom: 0; height: 3rem;"><a href="{{url_for('views.product', id=products[i].id)}}" class="a-name">{{ products[i].Nume }} </a></p>
+                        {% if products[i].Cantitate > 0 %}
+                        <div class = "price" style="padding-bottom: 2px; padding-top:1px;"><span class="text-danger mr-1" style="text-align: center;" >{{ "£%.2f"|format(products[i].PretNou/100) }}{% if (products[i].PretVechi)|int/100 > products[i].PretNou/100 %} </span> <span class="text-grey" ><s>{{ "£%.2f"|format(products[i].PretVechi/100) }}</s></span> {% endif %}</div>
+                        {% else %}
+                        <div class="price" style="padding-bottom: 2px; padding-top:1px;">Out of stock</div>
+                        {% endif %}
+                    </div>
+                </div> 
+            </div>
+        {% endfor %}
+        </div>
+    </div>
+    <div id="finish"></div>
+</body>
+
+{% endblock %}

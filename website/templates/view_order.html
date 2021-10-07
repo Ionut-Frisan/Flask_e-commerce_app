@@ -1,0 +1,136 @@
+{% extends 'admind.html' %}
+
+{% block hrefs %} 
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+<link rel="stylesheet" href="{{ url_for('static', filename='view_order.css') }}">
+
+{% endblock %}
+
+{% block title %} Admin - Produse {% endblock %}
+
+{% block content %}
+
+{% with messages = get_flashed_messages(with_categories=True) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            {% if category == "succes" %}
+            <p style="text-align: center; color:green; font-weight: bold; padding-top: 10px;">{{message}}</p>
+            {% else %}
+            <p style="text-align: center; color:red; font-weight: bold; padding-top: 10px;">{{message}}</p>
+            {% endif %}
+        {% endfor %}
+    {% endif%}
+{% endwith %}
+
+
+<div class="wrapper">
+        <div class="title">Order no. {{order.id}}</div>
+        
+        <div class="form-group">
+            <label for="status">Status</label>
+            {% if order.status == -2 %}
+            <input type="text" id="status" name="status" readonly value="Checkout initiat, dar plata a fost refuzata - nu onorati">
+            {% endif %}
+            {% if order.status == -1 %}
+            <input type="text" id="status" name="status" readonly value="Order anulat de admin">
+            {% endif %}    
+            {% if order.status == 0 %}
+            <input type="text" id="status" name="status" readonly value="Checkout initiat, dar nefinalizat - nu onorati">
+            {% endif %}
+            {% if order.status == 1 %}
+            <input type="text" id="status" name="status" readonly value="Comanda actuala - se asteapta livrarea">
+            {% endif %}
+            {% if order.status == 2 %}
+            <input type="text" id="status" name="status" readonly value="Comanda incheiata - produsele au fost livrate">
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            <label for="user_id">User id</label>
+            {% if order.user_id == -1 %}
+            <input type="text" id="user_id" name="user_id" readonly value="Guest - comanda plasata fara a fi conectat">
+            {% else %}
+            <input type="text" id="user_id" name="user_id" readonly value="{{order.user_id}}">
+            {% endif %}
+        </div>
+        <div class="form-group">
+            <label for="firstName">Name</label>
+            <input type="text" id="firstName" name="firstName" readonly value="{{order.name}}">
+        </div>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" readonly value="{{order.email}}">
+        </div>
+        <div class="form-group">
+            <label for="phone">Phone number</label>
+            <input type="number" id="phone" name="phone" readonly value="{{order.phone}}">
+        </div>
+        <div class="form-group">
+            <label for="date">Date</label>
+            <input type="text" id="date" name="date" readonly value="{{order.date}}">
+        </div>
+        <div class="form-group">
+            <label for="adress">Adress</label>
+            <input type="text" id="adress" name="adress" readonly value="{{order.adress}}">
+        </div>
+        <div class="form-group">
+            <label for="payment_id">Payment id</label>
+            <input type="text" id="payment_id" name="payment_id"readonly value="{{order.payment_id}}">
+        </div>
+        <div class="form-group">
+            <label for="textarea">Extra details</label>
+            {% if order.details|length == 0 %}
+            <textarea name="textarea" rows="2" id="textarea" readonly >None - clientul nu a lasat niciun comentariu/cerere pentru comanda</textarea>
+            {% else %}
+            <textarea name="textarea" rows="5" id="textarea" readonly >{{order.details}}</textarea>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            <p class="payment-method">Payment method:</p>
+            <div class="custom_select">
+                <div class="radio_btn inline">
+                    <input type="radio" name="pay" id="pay" readonly value="Credit/Debit Card" checked>
+                    <label for="card" class="label">{{order.payment}}</label>
+                </div>
+            </div>
+        </div>
+        <p>Products:</p>
+        
+        <table class="table">
+            {% set ns = namespace(GrandTotal = 0) %}
+            <thead>
+                <th>Product code</th>
+                <th>Name</th>
+                <th>Quantity</th>
+                <th>Price/u</th>
+                <th>Subtotal</th>
+            </thead>
+            <tbody>
+            {% for key, value in products.items() %}
+            <tr>
+            <td><a href="{{url_for('views.product', id=key|int)}}">{{key}}</a></td>
+            <td><a href="{{url_for('views.product', id=key|int )}}">{{value["name"]}}</a></td>
+            <td>{{value["quantity"]}}</td>
+            <td>{{value["price"]/100|float}}</td>
+            {% set subtotal = value["quantity"]|int * value["price"]/100|float %}
+            {% set ns.GrandTotal = ns.GrandTotal + subtotal %}
+            <td>£{{subtotal}}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+            
+        </table>
+        <p class="grandtotal">Grandtotal: {{ns.GrandTotal}}</p>
+        <div class="actions">
+            <form action="{{url_for('views.viewOrders', page=1)}}" class="">
+                <input type="submit" value="Go back" class="submit">
+            </form>
+            <form action="{{url_for('views.cancel_order', order_id = order.id)}}" >
+                <input type="submit" value="Cancel order" class="cancel">
+            </form>
+            <form action="{{url_for('views.finalize_order', order_id = order.id)}}">
+                <input type="submit" value="Mark as delivered" class="finalize">
+            </form>
+        </div>
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %} Contact us {% endblock %}
+
+{% block keyword %} 
+<input type="text" class="search" name="tag" id="tag"placeholder="Insert keyword" />
+{% endblock %}
+
+{% block hrefs %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+<link rel="stylesheet" href="{{ url_for('static', filename='contact.css' )}}">
+{% endblock %}
+
+{% block content %}
+
+{% with messages = get_flashed_messages(with_categories=True) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            {% if category == "error" %}
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            {% else %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
+<div class="wrapper">
+    <form action="{{url_for('views.contact')}}" autocomplete="off" method="POST">
+        <h3>Contact us</h3>
+        <label for="title">Title</label>
+        <input type="text" required class="form-group" name="title" id="title" placeholder="eg. Confirmation email not received">
+        <label for="email">Email</label>
+        <input type="email" required class="form-group" name="email" id="email" placeholder="example@gmail.com">
+        <label for="description">Description</label>
+        <textarea name="message" required class="form-group" id="description" rows="5" placeholder="eg. I have placed an order, but I didn't receive the confirmation mail"></textarea>
+        <input type="submit" name="submit" id="submit" value="Send">
+    </form>
+</div>
+
+
+{% endblock %}

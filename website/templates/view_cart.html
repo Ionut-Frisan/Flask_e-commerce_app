@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+{% block title %} Cart {% endblock %}
+
+{% block keyword %} 
+<input type="text" class="search" name="tag" id="tag"placeholder="Insert keyword" />
+{% endblock %}
+
+{% block hrefs %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+<link rel="stylesheet" href="{{ url_for('static', filename='view_cart_style.css' )}}">
+{% endblock %}
+
+{% block content %}
+
+{% with messages = get_flashed_messages(with_categories=True) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            {% if category == "error" %}
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            {% else %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
+{% if session["ShoppingCart"]|length > 0 %}
+{% set ns = namespace(GrandTotal = 0) %}
+<div class="Container">
+
+        <table class="table">
+            <thead>
+                <th>Nr</th>
+                <th>Name</th>
+                <th>Quantity</th>
+                <th>Price/Unit</th>
+                <th>SubTotal</th>
+                <th>Edit/Delete</th>
+            </thead>
+            <tbody> 
+                {% for key, product in session["ShoppingCart"].items() %}
+                {% set pr = Product.query.filter_by(id=key).first() %}
+                <tr>
+                    <form action="{{url_for('views.updateCart', id=key)}}", method="POST">
+                        <td data-label="Nr">{{loop.index}}</td>
+                        <td data-label="Name"><a href="{{url_for('views.product', id=key)}}">{{product.name}}</a></td>
+                        <td data-label="Quantity"><input class="quantity" name="quantity" type="number" value="{{product.quantity}}" min="1" max={{pr.Cantitate}}></td>
+                        <td data-label="Price/Unit">{{"£%.2f"|format(product.price/100)}}</td>
+                        {% set total = product.quantity|int * product.price/100|float %}
+                        {% set ns.GrandTotal = ns.GrandTotal + total %}
+                        <td data-label="SubTotal">{{"£%.2f"|format(total)}}</td>
+                        <td data-label="Remove">
+                            <button method="POST" class="updateBtn"><img class ="update-icon" src="{{ url_for('static', filename='edit.svg' )}}" alt="update"> </button>
+                            <a href="{{url_for('views.deleteItem', id=key)}}"><img class ="remove-icon" src="{{ url_for('static', filename='trash.svg' )}}" alt="delete"> </a> 
+                        </td>
+                    </form> 
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div class="cart_options">
+            <form action="" method="POST">
+                <button class="checkout" name="checkout"><a href="{{url_for('views.checkout')}}"> Checkout </a> </button>
+            </form>
+            <p class="Grand_total">Grand total: {{"£%.2f"|format(ns.GrandTotal)}}</p>
+            <form action="" method="POST">
+                <button class="clear" name="clear"><a href="{{url_for('views.clearCart')}}">Clear Cart</a> </button>
+            </form>
+        </div>
+</div>
+{% else %}
+
+<div class="Container_empty_cart">
+    <div class="empty_cart">
+        <h5>Your cart is empty</h5>
+        <h6>Return to <a href="{{url_for('views.home')}}">store</a> to add products</h6>
+        <img src="{{url_for('static', filename='empty-cart.svg')}}" alt="Empty Shopping Cart">
+    </div>
+</div>
+
+{% endif %}
+
+<div class="footer"></div>
+
+{% endblock %}

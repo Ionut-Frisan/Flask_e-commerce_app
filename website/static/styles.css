@@ -1,0 +1,52 @@
+
+.card-text{
+    overflow-y: auto;
+    height: 60px;
+}
+
+.card-text::-webkit-scrollbar {
+    display: none;
+}
+
+.card-text {
+    -ms-overflow-style: none;  
+    scrollbar-width: none;  
+    text-align: center;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+  }
+
+.col{
+    display: inline-block;
+    padding: 10px 10px;
+}
+
+.container{
+min-width: none;
+}
+
+.container a{
+    text-decoration: none;
+    color: black;
+    
+    text-align: center;
+}
+
+
+.container a:hover{
+   color:rgb(189, 7, 7)
+}
+
+.price{
+    text-align: center;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+.card-body{
+    padding: 3px;
+}
+
+.form-container{
+    background: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px 0px #000;
+}

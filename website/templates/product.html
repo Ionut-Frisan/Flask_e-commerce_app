@@ -1,0 +1,221 @@
+{% extends "base.html" %}
+{% block title %} Why Not? {% endblock %}
+
+{% block hrefs %}
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='styles.css')}}">
+<!--<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='style.css')}}"> -->
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='product_style.css' )}}">
+<script type=text/javascript src="{{ url_for('static', filename='navbar_script.js' )}}" defer></script>
+<link rel="stylesheet" href="{{ url_for('static', filename='navbar.css' )}}">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script type=text/javascript src="{{ url_for('static', filename='product.js' )}}" defer></script>
+{% endblock %}
+
+{% block keyword %} 
+<input type="text" class="search" name="tag" id="tag"placeholder="Insert keyword" />
+{% endblock %}
+
+{% block content %} 
+
+<head>
+    {% with messages = get_flashed_messages(with_categories=True) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            {% if category == "error" %}
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            {% else %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
+    <title> {{ product.Nume }} </title>
+
+    <style>
+    .container-fluid{
+        padding-top: 0;
+        margin-top: 0;
+    }
+
+        .zoom {
+    transition: transform .2s;
+    }
+  
+    .zoom:hover {
+    transform: scale(1.4); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+    
+    }
+
+    #auth{
+        justify-content: flex-end;
+    }
+
+    #titlu{
+    font-size: 1.75rem;
+    font-weight: 640;
+    }
+
+    #pret{
+        font-size: 1.5rem;
+        color: red;
+    }
+
+    .upload{
+        width: 115px;
+        outline: none;
+        border: 1px solid black;
+        border-color: white;
+    }
+
+    ::-webkit-file-upload-button{
+        color: rgb(51,51,51);
+        background: white;
+        border: 1px solid black;
+
+    }
+    ::-webkit-file-upload-button:hover{
+        background: rgb(236,237,238)
+    }
+
+    .buttons{
+    position: absolute;
+    bottom: 10%; 
+    margin-left: 8vw;
+    clear:both;
+    }
+    .descriere::-webkit-scrollbar {
+    display: none;
+    }
+    .descriere {
+        overflow-x: scroll;
+    -ms-overflow-style: none;  
+    scrollbar-width: none;  
+    height: 300px;
+    font-size: 13px;
+    }
+    
+    @media (max-width: 890px){
+    .buttons{
+    position: absolute;
+    margin-left: 3vw;
+
+    }
+    }
+    @media (max-width: 1040px){
+    .buttons{
+    position: absolute;
+    margin-left: 1vw;
+    }
+
+    .buttons .btn {
+    height: 40px;
+    width: 120px;
+    border-radius: 0px !important;
+    
+    }
+    #titlu {
+        font-size: 1.4rem;
+    }
+    #pret {
+        font-size: 1.2rem;
+    }
+    }
+
+    @media (max-width: 768px) {
+    .buttons{
+    position: relative;
+    margin-left: 10vw;
+    }
+
+    .zoom:hover {
+    transform: scale(1.1); 
+    }
+    }
+    </style>
+
+</head>
+
+<body>
+
+   <div class="content">  
+        <div class="container-fluid mt-5 mb-5" style="width: 95%;">
+            <div class="category_div"> <p class="categ">Category: </p> <p class="categ_value">{{product.Categorie}}</p></div>   
+            <div class="card">
+                <div class="row g-0">
+                    <div class="col-md-6 border-end">
+                        <div class="d-flex flex-column justify-content-center">
+                            <div class="main_image"> <img  class = "zoom"src="{{url_for('static', filename='img/'+product.Imagini.split('//')[0])}}" id="main_product_image" width="350" style="z-index: 4; overflow:visible;"> </div>
+                            <div class="thumbnail_images">
+                                <ul id="thumbnail">
+                                    {% for i  in range( imagini|length - 1) %}
+                                    <li><img onclick="changeImage(this)" src="{{url_for('static', filename='img/'+imagini[i])}}" width="70px" ></li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 " style="position: relative;">
+                        <div class="p-3 right-side" style="padding-bottom: 20px;">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h3 id="titlu">{{ product.Nume }}</h3> <span class="heart"><i class='bx bx-heart'></i></span>
+                            </div>
+                            <hr>
+                            {% if product.PretVechi|int > 0 %}
+                            <span class="text-grey">&ensp;<s> {{ "£%.2f"|format(product.PretVechi/100)  }}</s></span>
+                            <h2 id="pret" style="display: inline;">  {{ "£%.2f"|format(product.PretNou/100) }} </h2>
+                            {% else %}
+                            <h2 id="pret">  {{ "$%.2f"|format(product.PretNou/100) }} </h2>
+                            {% endif %}
+                            <hr>
+                            <div class="mt-2 pr-3 content">
+                                <div class="descriere">{{ product.Descriere }}</div>
+                            </div>
+                            </div>
+                            <div class="buttons">
+                                
+                                <form action="{{url_for('views.addCart')}}" method="POST" enctype="multipart/form-data" style="margin: auto;">
+                                    <input type="hidden" name="product_id" value={{product.id}}>
+                                    <label for="quantity">Quantity</label>
+                                    {% if product.Cantitate > 0 %}
+                                    <input type="number" name="quantity" id="quantity" value="1" min="1" max={{product.Cantitate}}>
+                                    <button type ="submit" class="btn btn-dark add_cart">Add to Cart</button>
+                                    {% else %}
+                                    <input type="number" name="quantity" id="" value="0" min="0" max=0>
+                                    <button type ="submit" class="btn btn-dark add_cart" style="background-color: grey;" disabled>Out of stock</button> </div>
+                                    {% endif %}
+                                    {% if product.Upload == True %}
+                                    <input type="file" name="files[]" class="upload " multiple="true" required label="" >
+                                    {% endif %}
+                                </form>
+                            </div>
+                                
+                      
+                    </div>
+                </div>
+            </div>
+    </div>
+ </div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
+<script  src="{{url_for('static', filename='img_selector.js')}}"  crossorigin="anonymous"></script>
+
+</body>
+
+<footer style="margin-bottom: 200px;"></footer>
+
+
+</html>
+{% endblock %}

@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block title %} Order has been placed :) {% endblock %}
+
+{% block keyword %}
+<input type="text" class="search" name="tag" id="tag"placeholder="#ThankYou">
+{% endblock %}
+
+{% block hrefs %}
+<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='success.css')}}">
+{% endblock %}
+
+{% block content %} 
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+<script src="{{url_for('static', filename='confetti.js')}}"></script>
+{% with messages = get_flashed_messages(with_categories=True) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            {% if category == "error" %}
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            {% else %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
+<div class="wrapper">
+    <div class="top" >
+        <h2 class="thanks">Thank you for your order!</h2>
+        <img class="image" src="{{url_for('static', filename='green_check.svg')}}" alt="Big like!">
+    </div>
+    <div class="bottom">
+        <h3 class="extra"> We will constantly notify you by email with the details and status of your order. </h3>
+        <h4 class="contact">Having trouble? <a href="{{url_for('views.contact')}}">Contact us</a>.</h4>
+    </div>
+</div>
+
+<script>
+
+    const start = () =>{
+        setTimeout(() => {
+            confetti.start();
+        }, 1);
+    }
+    const stop = () =>{
+        setTimeout(() => {
+            confetti.stop();
+        }, 3000);
+    }
+    start();
+    stop();
+
+</script>
+{% block contact %}
+{% endblock %}
+
+{% endblock %}

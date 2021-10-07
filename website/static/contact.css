@@ -1,0 +1,57 @@
+body{
+    background-color: rgb(236,237,238);
+}
+
+.wrapper .form-group{
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center; 
+    width: 100%;
+    padding: 3px;
+    border-radius: 4px;
+    
+   }
+
+.wrapper h3{
+    text-align: center;
+    padding-bottom: 5px;
+}
+
+.wrapper textarea{
+    resize: none;
+}
+
+input:focus, textarea:focus, select:focus{
+    outline: none;
+}
+
+.wrapper{
+    color:black;
+    width:900px;
+    margin: auto;
+    border: 2px solid grey;
+    padding:30px 50px 30px 50px;
+    margin-top: 45px;
+    border-radius: 4px;
+    background-color: white;
+}
+
+#submit{
+    background-color: rgb(51, 51, 51);
+    color: white;
+    border-color: rgb(51, 51, 51);
+    border-radius: 4px;
+    padding: 4px 7px 4px 7px;
+}
+
+@media(max-width:1080px){
+    .wrapper{
+        width: 600px;
+    }
+}
+
+@media(max-width:800px){
+    .wrapper{
+        width: 450px;
+    }
+}

@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% block title %} Checkout {% endblock %}
+
+{% block keyword %} 
+<input type="text" class="search" name="tag" id="tag"placeholder="Insert keyword" />
+{% endblock %}
+
+{% block hrefs %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+<link rel="stylesheet" href="{{ url_for('static', filename='checkout.css' )}}">
+{% endblock %}
+
+{% block content %}
+
+{% with messages = get_flashed_messages(with_categories=True) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            {% if category == "error" %}
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            {% else %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
+<div class="wrapper">
+    <form action="{{url_for('views.checkout')}}" class="" method="POST">
+        <div class="title">Shipment details</div>
+
+        <div class="form-group">
+            <label for="firstName">First name</label>
+            <input type="text" id="firstName" name="firstName" required placeholder="eg. John">
+        </div>
+        <div class="form-group">
+            <label for="lastName">Last name</label>
+            <input type="text" id="lastName" name="lastName" required placeholder="eg. Varvatos">
+        </div>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required placeholder="eg. example@email.com">
+        </div>
+        <div class="form-group">
+            <label for="phone">Phone number</label>
+            <input type="number" id="phone" name="phone" required min="10" minlength="10" placeholder="eg. 479 111 23456">
+        </div>
+        <div class="form-group">
+            <label for="city">City</label>
+            <input type="text" id="city" name="city" required placeholder="eg. London">
+        </div>
+        <div class="form-group">
+            <label for="street">Street</label>
+            <input type="text" id="street" name="street" required placeholder="eg. Abbey Road 23B">
+        </div>
+        <div class="form-group">
+            <label for="apartament">Apartament</label>
+            <input type="text" id="apartament" name="apartament" required placeholder="eg. 77">
+        </div>
+        <div class="form-group">
+            <label for="zipcode">Zip code</label>
+            <input type="text" id="zip" name="zip" min="" minlength="1" maxlength="6" required placeholder="eg. NW6/123456">
+        </div>
+        <div class="form-group">
+            <label for="textarea">Extra details</label>
+            <textarea name="textarea" id="textarea" rows="3" placeholder="Please complete this field if you have any details you want to add to your order."></textarea>
+        </div>
+        <div class="form-group">
+            <p class="payment-method">Please select payment method:</p>
+            <br>
+            <div class="custom_select">
+                <div class="radio_btn">
+                    <input type="radio" name="pay" id="card" value="Credit/Debit Card" checked>
+                    <label for="card" class="label">Credit/Debit card</label>
+                </div>
+                <br>
+                <div class="radio_btn">
+                    <input type="radio" name="pay" id="cash" value="Cash">
+                    <label for="cash" class="label">Cash</label>
+                </div>
+            </div>
+        </div>
+
+        <input type="submit" value="Continue" class="submit">
+
+    </form>
+</div>
+
+{% endblock %}

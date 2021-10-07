@@ -1,0 +1,43 @@
+{% extends "admind.html" %}
+{% block title %} Interactiuni clienti {% endblock %}
+
+{% block content %}
+
+{% with messages = get_flashed_messages(with_categories=True) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            {% if category == "succes" %}
+            <p style="text-align: center; color:green; font-weight: bold; padding-top: 10px;">{{message}}</p>
+            {% else %}
+            <p style="text-align: center; color:red; font-weight: bold; padding-top: 10px;">{{message}}</p>
+            {% endif %}
+        {% endfor %}
+    {% endif%}
+{% endwith %}
+
+<table class="table" style="margin: 20px;">
+    <thead>
+        <tr>
+            <th>View</th>
+            <th>Id</th>
+            <th>Title</th>
+            <th>Mail</th>
+            <th>Date</th>
+            <th>Message</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for interaction in interactions %}
+        <tr>
+            <td><a href="{{url_for('views.view_interaction', id=interaction.id)}}"><img src="{{url_for('static', filename='view.svg')}}" alt="view"></a></td>
+            <td>{{interaction.id}}</td>
+            <td>{{interaction.title}}</td>
+            <td>{{interaction.email}}</td>
+            <td>{{interaction.date}}</td>
+            <td>{{interaction.message}}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

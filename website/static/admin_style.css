@@ -1,0 +1,34 @@
+.navbar {
+    padding-left: 30px;
+}
+
+.form-control{
+    box-shadow:0 0 15px 4px rgba(0,0,0,0.06);
+}
+
+.col-lg-4{
+    padding: 40px;
+    border-left: 1px gray solid;
+    border-right: 1px gray solid;
+    border-bottom: 1px gray solid;
+    box-shadow:0 0 15px 10px rgba(9, 2, 19, 0.06);
+}
+
+.table-striped{
+    padding: auto;
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: bold;
+}
+
+.edit-icon{
+    width:25px;
+}
+
+.form-control textarea{
+    white-space: pre-wrap; 
+    overflow-wrap: break-word;
+}
+
+.too{
+    color:red !important;
+}
